@@ -13,6 +13,18 @@ app.use(express.static('public'));
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+  socket.on('new-user', (name)=>{
+    let user = name
+    socket.broadcast.emit('user-joined', name)
+  })
+  socket.on('chat message', (msg, user) => {
+    socket.broadcast.emit('msg', msg, user);
+    console.log('message: ' + msg);
+  });
+  
 });
 
 server.listen(3000, () => {
