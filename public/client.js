@@ -35,3 +35,10 @@ socket.on("msg", (msg, user) => {
   append(`${user}: ${msg}`, "left");
   audio.play();
 });
+
+// socket.emit('disconnect', user);
+
+socket.on('user-left', (data)=>{
+  append(`${data} left the chat`);
+  audio.play();
+})

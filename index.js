@@ -11,13 +11,16 @@ app.get('/', function(req, res) {
   });
 app.use(express.static('public'));
 
+const users = [];
+
 io.on('connection', (socket) => {
   console.log('a user connected');
+
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    socket.broadcast.emit('user-left', users[socket.id])
   });
   socket.on('new-user', (name)=>{
-    let user = name
+    users[socket.id] = name;
     socket.broadcast.emit('user-joined', name)
   })
   socket.on('chat message', (msg, user) => {
